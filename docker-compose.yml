@@ -13,14 +13,10 @@ services:
       MYSQL_PASSWORD: admin
     volumes:
       # - ./message.sql:/docker-entrypoint-initdb.d/message.sql   # Mount sql script into container's /docker-entrypoint-initdb.d directory to get table automatically created
-      - mysql-data:/var/lib/mysql  # Mount the volume for MySQL data storage
+      - mysql-data:/var/lib/mysql 
     networks:
       - twotier
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
-      interval: 10s
-      retries: 5
-      start_period: 30s
+   
 
   flask-app:
     build:
@@ -34,8 +30,7 @@ services:
       MYSQL_DB: devops
     depends_on:
       mysql: 
-        condition: service_healthy
-
+        
     networks:
       - twotier
 
